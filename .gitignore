@@ -1,0 +1,11 @@
+__pycache__/
+.venv/
+*.pyc
+checkpoints/
+runs/
+PREP.md
+STATUS.md
+node_modules/
+.wrangler/
+evidence/
+.DS_Store

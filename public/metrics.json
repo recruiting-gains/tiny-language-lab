@@ -1,0 +1,95 @@
+{
+  "parameters": 28480,
+  "config": {
+    "vocab_size": 27,
+    "context_length": 48,
+    "embed_dim": 32,
+    "num_heads": 4,
+    "num_layers": 2
+  },
+  "seed": 17,
+  "steps": 500,
+  "session_steps": 500,
+  "device": "cpu",
+  "training_seconds": 1.8433433340396732,
+  "stop_reason": "step_limit",
+  "before": {
+    "train_loss": 3.288892698287964,
+    "validation_loss": 3.289594268798828,
+    "sample": "the mvnxsfpmdxry\nevynphwyhvwgdf qkc vdreeaiyeteadtumkmiahiwoi.wiucyidshptrg.cdaiupem"
+  },
+  "after": {
+    "train_loss": 0.22508766651153564,
+    "validation_loss": 0.23227010071277618,
+    "sample": "the hill.\nthe small dog rests near the hill.\nthe quiet fox sleeps near the gardi the"
+  },
+  "history": [
+    {
+      "step": 0,
+      "train_loss": 3.288892698287964,
+      "validation_loss": 3.289594268798828
+    },
+    {
+      "step": 50,
+      "train_loss": 1.3840496778488158,
+      "validation_loss": 1.3859103679656983
+    },
+    {
+      "step": 100,
+      "train_loss": 0.8640612125396728,
+      "validation_loss": 0.8863992929458618
+    },
+    {
+      "step": 150,
+      "train_loss": 0.5367879092693328,
+      "validation_loss": 0.5650198221206665
+    },
+    {
+      "step": 200,
+      "train_loss": 0.3869510889053345,
+      "validation_loss": 0.4091724455356598
+    },
+    {
+      "step": 250,
+      "train_loss": 0.32893029451370237,
+      "validation_loss": 0.3371934473514557
+    },
+    {
+      "step": 300,
+      "train_loss": 0.2845767676830292,
+      "validation_loss": 0.2938975811004639
+    },
+    {
+      "step": 350,
+      "train_loss": 0.27053363621234894,
+      "validation_loss": 0.2817482233047485
+    },
+    {
+      "step": 400,
+      "train_loss": 0.2578303664922714,
+      "validation_loss": 0.27535892426967623
+    },
+    {
+      "step": 450,
+      "train_loss": 0.2475225269794464,
+      "validation_loss": 0.2603019118309021
+    },
+    {
+      "step": 500,
+      "train_loss": 0.22508766651153564,
+      "validation_loss": 0.23227010071277618
+    }
+  ],
+  "tests": {
+    "checkpoint_reload_exact": true,
+    "causal_prefix_unchanged": true,
+    "held_out_loss_improved": true
+  },
+  "dataset": {
+    "description": "Original synthetic nature sentences, split before window sampling.",
+    "train_documents": 316,
+    "validation_documents": 92,
+    "sha256": "abe7f4f04ab6b0d4c198b67f4f738fa2798a1eac4e676a1464f818ffd28f11e3",
+    "limitations": "Shared grammar and vocabulary. Not evidence of broad language understanding."
+  }
+}

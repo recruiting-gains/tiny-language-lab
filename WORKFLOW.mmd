@@ -1,0 +1,24 @@
+flowchart TD
+  subgraph P[Preparation]
+    A[Your reference and learning goal] --> B[Verify course and Mac]
+    A --> C[Choose teaching pace]
+    B --> D[Choose tiny local model and safe data]
+    C --> D
+  end
+  subgraph I[Implementation and teaching]
+    D --> E[Check isolated Python environment]
+    E --> F{Small runtime probe passes?}
+    D --> G[Text to tokens to next-token targets]
+    F -->|Yes| H[Build baseline and causal transformer]
+    G --> H
+    H --> J[Bounded training and genuine before-after samples]
+    J --> K[Independent tests: no future peeking, held-out loss, save and reload]
+    K --> L{Checks pass?}
+    L -->|One identified fix, at most two retries| H
+    F -->|No| X[Save error and exact resume step]
+    L -->|Limit or missing dependency| X
+    L -->|Yes| M[Working local lesson and verified results]
+  end
+  M --> N{Publishing access verified?}
+  N -->|Yes, after local lesson| O[GitHub source and Cloudflare demo]
+  N -->|Not yet| Q[Keep local delivery; record publishing blocker]

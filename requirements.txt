@@ -1,0 +1,2 @@
+# Install in a project-local virtual environment; never into system Python.
+torch==2.14.0

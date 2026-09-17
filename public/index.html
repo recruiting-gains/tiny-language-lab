@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f3ee">
+  <meta name="description" content="A tiny language model trained from scratch. Generate text in your browser, inspect its characters and attention, and see the real training record.">
+  <title>Tiny Language Lab — One character at a time</title>
+  <link rel="stylesheet" href="/style.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#experiment">Skip to the experiment</a>
+  <header class="site-header shell">
+    <a class="wordmark" href="#" aria-label="Tiny Language Lab home"><span class="logo-mark" aria-hidden="true">t<span>_</span></span><span>Tiny Language Lab</span></a>
+    <nav aria-label="Page sections"><a href="#experiment">Experiment</a><a href="#inside">Look inside</a><a href="#training">Training</a></nav>
+    <span class="edition">FIELD NOTES / 001</span>
+  </header>
+
+  <main>
+    <section class="hero shell" aria-labelledby="page-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="small-cross" aria-hidden="true">+</span> A SMALL MODEL. AN OPEN NOTEBOOK.</p>
+        <h1 id="page-title">Language, one<br><em>character</em> at a time.</h1>
+        <p class="hero-description">A tiny transformer, trained from scratch. Give it a beginning, watch it predict what comes next, and look at the numbers underneath.</p>
+      </div>
+      <div class="hero-diagram" aria-label="A language model uses the characters t, h, e, and a space as context to predict the next character.">
+        <p class="diagram-kicker">THE WHOLE IDEA</p>
+        <div class="character-line" aria-hidden="true"><span>t</span><span>h</span><span>e</span><span class="space-char">␣</span><span class="next-character">?</span></div>
+        <div class="diagram-bracket" aria-hidden="true"><span>context</span><span>next</span></div>
+        <p class="diagram-note">Read the context.<br>Predict one character. Repeat.</p>
+      </div>
+    </section>
+
+    <div class="model-facts shell" aria-label="Model specifications">
+      <div><span class="fact-label">Parameters</span><strong id="parameter-count">—</strong></div>
+      <div><span class="fact-label">Architecture</span><strong id="architecture">Causal transformer</strong></div>
+      <div><span class="fact-label">Context window</span><strong id="context-window">—</strong></div>
+      <div><span class="fact-label">Inference</span><strong>In your browser <span class="local-dot" aria-hidden="true"></span></strong></div>
+    </div>
+
+    <section class="section shell" id="experiment" aria-labelledby="experiment-title">
+      <div class="section-heading"><div><p class="eyebrow">01 / TRY THE MODEL</p><h2 id="experiment-title">Start a sentence. See what follows.</h2></div><span class="status-chip" id="model-status"><span class="status-dot" aria-hidden="true"></span><span id="model-status-label">Loading model</span></span></div>
+      <div class="experiment-panel">
+        <form id="generation-form" class="generation-controls">
+          <div class="control-heading"><label for="prompt">Your starting text</label><span class="mono quiet" id="prompt-count">4 characters</span></div>
+          <textarea id="prompt" name="prompt" rows="3" maxlength="512" spellcheck="false" autocomplete="off" aria-describedby="prompt-help">the </textarea>
+          <p class="field-help" id="prompt-help">Try “the ”, “a small ”, or a beginning of your own.</p>
+          <div class="temperature-heading"><label for="temperature">Temperature</label><output id="temperature-value" for="temperature">0.80</output></div>
+          <input id="temperature" name="temperature" type="range" min="0.2" max="1.5" step="0.05" value="0.8" aria-describedby="temperature-help">
+          <div class="range-labels" aria-hidden="true"><span>More familiar</span><span>More surprising</span></div>
+          <p class="field-help" id="temperature-help">Changes how strongly the model favors likely characters.</p>
+          <div class="generate-actions"><button class="primary-button" id="generate-button" type="submit" disabled>Generate <span aria-hidden="true">↗</span></button><button class="text-button" id="stop-button" type="button" hidden>Stop</button><span class="output-length mono">+48 characters</span></div>
+          <p class="action-status" id="generation-status" role="status" aria-live="polite">Loading the trained weights into this browser…</p>
+        </form>
+        <div class="generation-result">
+          <div class="result-heading"><span class="eyebrow">MODEL CONTINUATION</span><span class="mono quiet" id="generation-timing">TOY MODEL / LOCAL</span></div>
+          <div id="generation-output" class="output-text is-empty" aria-label="Generated text"><span class="output-placeholder">A beginning is all it needs.<br><span>Its next 48 characters will appear here.</span></span></div>
+          <div class="output-legend"><span><i class="legend-marker prompt-marker" aria-hidden="true"></i>Your prompt</span><span><i class="legend-marker model-marker" aria-hidden="true"></i>Model output</span></div>
+          <p class="result-note">This is a toy language model, not a chatbot. It learns small text patterns; expect repetition, mistakes, and invented words.</p>
+        </div>
+      </div>
+      <p class="below-panel-note"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1" stroke="currentColor"/><path d="M5 7V5a3 3 0 0 1 6 0v2" stroke="currentColor"/></svg>Your prompt stays in this browser. No paid API. No pretrained language model.</p>
+    </section>
+
+    <section class="section shell" id="inside" aria-labelledby="inside-title">
+      <div class="section-heading"><div><p class="eyebrow">02 / LOOK INSIDE</p><h2 id="inside-title">Small pieces. Visible mechanics.</h2></div><p class="section-aside">A view of one forward pass<br>through the trained model.</p></div>
+      <form id="inspection-form" class="inspection-form"><label for="inspection-prompt">Inspect a short sequence</label><div class="inspection-input-row"><input id="inspection-prompt" name="inspection-prompt" type="text" value="the cat" maxlength="96" spellcheck="false" autocomplete="off" aria-describedby="inspection-help"><button class="secondary-button" id="inspect-button" type="submit" disabled>Inspect <span aria-hidden="true">↗</span></button></div><p id="inspection-help" class="field-help">Spaces count as characters, too. <span id="inspection-status" role="status" aria-live="polite">Waiting for the model.</span></p></form>
+      <div class="inspection-layout">
+        <div class="token-section">
+          <div class="subheading"><span class="mini-index">A</span><h3>Characters → token IDs</h3></div>
+          <p class="explanation">Each character has a number. Those IDs select the vectors the model works with.</p>
+          <div id="token-list" class="token-list" aria-label="Characters and their token IDs"><p class="loading-note">Token IDs will appear when the model is ready.</p></div>
+          <div class="probability-section"><div class="subheading"><span class="mini-index">B</span><h3>What could come next?</h3></div><p class="explanation">The most likely next characters, before temperature changes the sampling distribution.</p><div id="probabilities" class="probabilities" aria-label="Next-character probabilities"><p class="loading-note">Waiting for predictions.</p></div></div>
+        </div>
+        <div class="attention-section">
+          <div class="subheading"><span class="mini-index">C</span><h3>Attention to earlier characters</h3></div><p class="explanation">Rows read from columns. Darker cells mean greater attention weight in this head. Future positions are masked.</p>
+          <div class="attention-top-label mono">CHARACTER BEING READ →</div>
+          <div id="attention-container" class="attention-container"><p class="loading-note">The attention map will appear here.</p></div>
+          <div class="attention-legend"><span class="mono">0</span><span class="gradient-key" aria-hidden="true"></span><span class="mono">1</span><span class="mask-key" aria-hidden="true"></span><span>Future / masked</span></div>
+          <p class="attention-caption" id="attention-caption">Final layer · head 1. Attention weights show one part of the computation; they are not an explanation of the model’s reasoning.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section training-section" id="training" aria-labelledby="training-title"><div class="shell">
+      <div class="section-heading"><div><p class="eyebrow">03 / THE TRAINING RECORD</p><h2 id="training-title">Learning leaves a trace.</h2></div><p class="section-aside">Recorded from a real training run.<br>These weights are already trained.</p></div>
+      <p id="metrics-status" class="action-status" role="status">Loading the training record…</p>
+      <div class="training-layout">
+        <div class="loss-panel"><div class="chart-heading"><h3>Next-character loss</h3><div class="chart-legend"><span><i class="chart-line train-line" aria-hidden="true"></i>Train</span><span><i class="chart-line validation-line" aria-hidden="true"></i>Validation</span></div></div><p class="explanation">Lower means less surprise at the correct next character. Validation uses text held out from training.</p><div id="loss-chart" class="loss-chart"><p class="loading-note">No chart until the recorded measurements load.</p></div><div class="loss-summary"><div><span class="fact-label">Validation · before</span><strong id="before-loss">—</strong></div><span class="loss-arrow" aria-hidden="true">→</span><div><span class="fact-label">Validation · after</span><strong id="after-loss">—</strong></div></div><p class="chart-caveat">A falling loss on this small dataset is evidence of learned patterns, not a measure of general intelligence.</p></div>
+        <div class="sample-panel"><h3>Same task, before & after</h3><p class="explanation">Actual samples saved with the training run. Imperfect text is part of the record.</p><div class="recorded-sample"><span class="eyebrow">BEFORE TRAINING</span><pre id="sample-before">Loading recorded sample…</pre></div><div class="recorded-sample after-sample"><span class="eyebrow">AFTER TRAINING</span><pre id="sample-after">Loading recorded sample…</pre></div><dl class="run-details"><div><dt>Training steps</dt><dd id="training-steps">—</dd></div><div><dt>Training loop only</dt><dd id="training-time">—</dd></div><div><dt>Training device</dt><dd id="training-device">—</dd></div><div><dt>Random seed</dt><dd id="training-seed">—</dd></div></dl></div>
+      </div>
+      <details class="dataset-details"><summary>What did this model learn from? <span aria-hidden="true">+</span></summary><div class="dataset-body"><p id="dataset-description">The dataset description will appear when the training record loads.</p><p id="dataset-counts"></p><p id="dataset-limitations"></p><p><a href="/metrics.json" target="_blank" rel="noopener">Read the training record (JSON) <span aria-hidden="true">↗</span></a></p></div></details>
+    </div></section>
+
+    <section class="section shell process-section" aria-labelledby="process-title"><div class="section-heading"><div><p class="eyebrow">04 / CONNECT THE DOTS</p><h2 id="process-title">One loop makes it a language model.</h2></div></div><ol class="process-steps"><li><span class="step-number">01</span><h3>Turn text into numbers.</h3><p>The tokenizer maps each character to an ID. Learned embeddings turn those IDs into vectors.</p></li><li><span class="step-number">02</span><h3>Use the available context.</h3><p>Causal attention combines information from earlier characters. A position can’t read the future.</p></li><li><span class="step-number">03</span><h3>Learn from the next character.</h3><p>Training compares predictions with the actual next character. Gradients adjust the weights to reduce that loss.</p></li><li><span class="step-number">04</span><h3>Sample. Append. Repeat.</h3><p>Generation samples one character, adds it to the context, and runs the model again. Training is already finished.</p></li></ol><div class="limits-note"><span class="small-cross" aria-hidden="true">+</span><p><strong>Keep the scale in mind.</strong> This experiment makes a transformer’s mechanics visible. Its tiny dataset and short context limit what it can produce. It does not retrieve facts or verify what it writes.</p></div></section>
+  </main>
+
+  <footer class="site-footer shell"><div><a class="wordmark" href="#"><span class="logo-mark small-logo" aria-hidden="true">t<span>_</span></span><span>Tiny Language Lab</span></a><p>An original, small experiment in how language models learn.</p></div><div class="footer-links"><a href="https://www.youtube.com/watch?v=UU1WVnMk4E8" target="_blank" rel="noopener">Course inspiration · freeCodeCamp <span aria-hidden="true">↗</span></a><a href="/metrics.json" target="_blank" rel="noopener">Recorded measurements <span aria-hidden="true">↗</span></a></div></footer>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "name": "tiny-language-lab",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "start": ".venv/bin/python server.py",
+    "deploy": "wrangler pages deploy public --project-name tiny-language-lab --branch main"
+  },
+  "devDependencies": {
+    "wrangler": "4.133.0"
+  }
+}
